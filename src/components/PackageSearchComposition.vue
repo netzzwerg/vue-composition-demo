@@ -14,7 +14,14 @@
 </template>
 
 <script>
-import { ref, onMounted, watch, computed, toRefs } from "vue";
+import {
+  ref,
+  onMounted,
+  watch,
+  computed,
+  toRefs,
+  getCurrentInstance,
+} from "vue";
 export default {
   name: "HelloWorld",
   props: {
@@ -52,7 +59,13 @@ export default {
     });
 
     // lifecycle
-    onMounted(fetchRepos);
+    onMounted(() => {
+      fetchRepos();
+      // get current instance
+      const internalInstance = getCurrentInstance();
+      console.log(internalInstance); // component instance, dont use
+      console.log(internalInstance.appContext.config); // appcontext good for global config settings
+    });
 
     // watcher
     watch(tag, fetchRepos);
@@ -63,7 +76,7 @@ export default {
       filter,
       repos,
       fetchRepos,
-      filteredRepos
+      filteredRepos,
     };
   },
 };
